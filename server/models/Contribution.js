@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const contributionSchema = new mongoose.Schema({
+  name: String,
   amount: Number,
-  upiId: String,
-  note: String,
+  upiId: { type: String, required: [true, "UPI ID is required"] },
   createdAt: { type: Date, default: Date.now }
 });
 
