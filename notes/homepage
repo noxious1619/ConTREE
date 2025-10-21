@@ -1,0 +1,50 @@
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleCreatePool } from '../features/home/homeSlice';
+import { PlusIcon } from '@heroicons/react/24/solid'; 
+
+function Home() {
+  const dispatch = useDispatch();
+  const showCreatePool = useSelector((state) => state.home.showCreatePool);
+
+  return (
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center"
+      style={{ backgroundImage: "url('/tree-sky-bg.jpg')" }} // Add your image in public folder
+    >
+      {/* Container */}
+      <div className="bg-white bg-opacity-90 p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center text-xl font-bold">
+            CoinTree
+          </div>
+          <p className="mt-2 text-sm text-gray-600">Smart Payment</p>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex mb-6">
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-l mr-px"
+            onClick={() => dispatch(toggleCreatePool())}
+          >
+            New Pool
+          </button>
+          <button className="bg-gray-500 text-white px-4 py-2 rounded-r">
+            Prev Pools
+          </button>
+        </div>
+
+        {/* Create a new pool section */}
+        {showCreatePool && (
+          <div className="flex flex-col items-center mt-6">
+            <PlusIcon className="w-12 h-12 text-blue-500 mb-2" />
+            <p className="text-blue-500 font-semibold text-lg">Create a new pool</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Home;

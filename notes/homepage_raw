@@ -1,0 +1,49 @@
+import React from "react";
+import { Plus } from "lucide-react";
+
+function Home() {
+  return (
+    <div
+      className="h-screen w-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
+      style={{ backgroundImage: "url('/tree_bg_pic.jpg')" }}
+    >
+      {/* Outer container */}
+      <div className="flex flex-col w-4/5 max-w-md h-[90%] max-h-full bg-white bg-opacity-80 p-6 rounded-3xl shadow-lg text-center">
+        
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-5">
+          <div
+            className="w-[120px] h-[120px] rounded-full flex items-center justify-center bg-center bg-contain bg-no-repeat shadow-md"
+            style={{ backgroundImage: "url('/logo_3.png')" }}
+          ></div>
+          <p className="mt-2 text-gray-700 font-semibold">Smart Payment</p>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex w-full gap-2 mb-4">
+          <button className="flex-1 bg-blue-500 text-white py-3 rounded-xl hover:bg-blue-600 transition">
+            New Pool
+          </button>
+          <button className="flex-1 bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 transition">
+            Prev Pools
+          </button>
+        </div>
+
+        {/* Create Pool Section */}
+        <div className="flex justify-center items-center w-full h-full bg-gray-200 rounded-xl p-6">
+          <div className="flex flex-col justify-center items-center">
+            <button className="rounded-full bg-[#C4E4FF] p-4 mb-4 shadow-md hover:bg-blue-100 transition">
+              <Plus className="w-12 h-12 text-blue-500" />
+            </button>
+            <div className="text-2xl font-semibold text-gray-700">
+              Create a new pool
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+export default Home;

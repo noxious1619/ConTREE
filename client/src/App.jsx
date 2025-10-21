@@ -2,16 +2,20 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Home from './pages/Home.jsx'
+import Template from './pages/Template.jsx'
+import Counter from './pages/Counter.jsx'
+import NewPool from './pages/NewPool.jsx'
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div className="text-center text-3xl text-blue-500"> 
-        Tailwind is working!
-      </div>
+      {/* <Home /> */}
+      {/* <Template /> */}
+      {/* <Counter /> */}
+      <NewPool />
     </>
   )
 }
