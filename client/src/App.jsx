@@ -7,6 +7,7 @@ import Template from './pages/Template.jsx'
 import Counter from './pages/Counter.jsx'
 import NewPool from './pages/NewPool.jsx'
 import UserForm from './pages/UserForm.jsx'
+import LockedPool from './pages/LockedPool.jsx'
 
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
       {/* <Template /> */}
       {/* <Counter /> */}
       {/* <NewPool /> */}
-      <UserForm />
+      {/* <UserForm /> */}
+      <LockedPool />
     </>
   )
 }
