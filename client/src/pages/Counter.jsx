@@ -14,7 +14,7 @@ function Counter() {
 
 return (
     <div
-        className="h-screen w-screen bg-center flex items-center justify-center bg-stre"
+        className="h-screen w-screen bg-center flex items-center justify-center bg-cover"
         style={{ backgroundImage: "url('/tree_bg_pic.jpg')" }}
     >
 

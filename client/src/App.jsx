@@ -6,6 +6,7 @@ import Home from './pages/Home.jsx'
 import Template from './pages/Template.jsx'
 import Counter from './pages/Counter.jsx'
 import NewPool from './pages/NewPool.jsx'
+import UserForm from './pages/UserForm.jsx'
 
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
       {/* <Home /> */}
       {/* <Template /> */}
       {/* <Counter /> */}
-      <NewPool />
+      {/* <NewPool /> */}
+      <UserForm />
     </>
   )
 }
