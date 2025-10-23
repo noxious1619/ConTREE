@@ -8,6 +8,8 @@ import Counter from './pages/Counter.jsx'
 import NewPool from './pages/NewPool.jsx'
 import UserForm from './pages/UserForm.jsx'
 import LockedPool from './pages/LockedPool.jsx'
+import LockedPool_1 from './pages/LockedPage_1.jsx'
+import LockedPool_2 from './pages/LockedPage_2'
 
 
 function App() {
@@ -19,7 +21,9 @@ function App() {
       {/* <Counter /> */}
       {/* <NewPool /> */}
       {/* <UserForm /> */}
-      <LockedPool />
+      {/* <LockedPool /> */}
+      {/* <LockedPool_1 /> */}
+      {/* <LockedPool_2 /> */}
     </>
   )
 }

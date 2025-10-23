@@ -81,24 +81,62 @@ return (
                     </div>
 
                     {/* Contribution display */}
-                    <div className='flex flex-cols h-[65%] w-full border-2 bg-blue-400'>
+                    <div className='flex flex-col h-[65%] w-full border-2 bg-blue-400'>
 
                         {/* first-person */}
-                        <div className='flex gap-3 justify-center items-center w-[23%] border-2'>
-                            <div>
+                        <div className='flex gap-3 justify-center items-center w-full h-[60px] mt-2'>
+                            <div className='w-[33%] h-full flex justify-center items-center text-xl'>
                                 Suresh
                             </div>
-                            <div>
-                                ₹64
+                            <div className='  w-[33%] h-full flex justify-center items-center text-xl text-orange-300'>
+                                ₹9.5
                             </div>
-                            <div>
-                                16th March 2025
+                            <div className=' w-[33%] h-full flex justify-center items-center text-l'>
+                                16/2/2025
                             </div>
                         </div>
 
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {/* Second-person */}
+                        <div className='flex gap-3 justify-center items-center w-full h-[60px] mt-2'>
+                            <div className='w-[33%] h-full flex justify-center items-center text-xl'>
+                                Ramesh
+                            </div>
+                            <div className='  w-[33%] h-full flex justify-center items-center text-xl text-red-500'>
+                                ₹30.5
+                            </div>
+                            <div className=' w-[33%] h-full flex justify-center items-center text-l'>
+                                <button className='h-[30px] w-[60px] bg-green-500 rounded-3xl'>
+                                    Pay
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Third-person */}
+                        <div className='flex gap-3 justify-center items-center w-full h-[60px] mt-2'>
+                            <div className='w-[33%] h-full flex justify-center items-center text-xl'>
+                                Raina
+                            </div>
+                            <div className='  w-[33%] h-full flex justify-center items-center text-xl text-green-300'>
+                                ₹4.5
+                            </div>
+                            <div className=' w-[33%] h-full flex justify-center items-center text-l'>
+                                Not paid
+                            </div>
+                        </div>
+
+                        {/* fourth-person */}
+                        <div className='flex gap-3 justify-center items-center w-full h-[60px] mt-2'>
+                            <div className='w-[33%] h-full flex justify-center items-center text-xl'>
+                                Suresh
+                            </div>
+                            <div className='  w-[33%] h-full flex justify-center items-center text-xl text-green-300'>
+                                ₹35.5
+                            </div>
+                            <div className=' w-[33%] h-full flex justify-center items-center text-l'>
+                                Not paid
+                            </div>
+                        </div>
+
                     </div>
 
             
