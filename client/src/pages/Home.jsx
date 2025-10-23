@@ -2,11 +2,13 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleCreatePool } from '../features/home/homeSlice';
 import { Plus } from "lucide-react"; // Import the icon
+import { useNavigate } from 'react-router-dom';
+
 
 
 function Home() {
-  const dispatch = useDispatch();
-  const showCreatePool = useSelector((state) => state.home.showCreatePool);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
   // You can add other logic, handlers, or state here
 
@@ -34,7 +36,9 @@ return (
             {/* content */}
             <div className=" flex justify-center items-center max-w-md w-full h-[90%] bg-[#E9E9E9] rounded-xl">
                 <div className="flex flex-col justify-center items-center">
-                    <button className=' rounded-full bg-[#C4E4FF] p-2 mb-4'>
+                    <button 
+                    onClick={() => navigate('/counter')} 
+                    className=' rounded-full bg-[#C4E4FF] p-2 mb-4'>
                         <Plus className="w-25 h-25 text-blue-500" />
                     </button>
                     <div className='max-w-md text-2xl font-semibold'>Create a new pool</div>

@@ -1,7 +1,7 @@
 // chatgpt
 
 import React from 'react';
-import { Plus, Minus, Edit2 } from "lucide-react";
+import { Plus, Minus, Edit2, User, DollarSign, Users, Calendar } from "lucide-react";
 
 function LockedPool_2() {
   return (

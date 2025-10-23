@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Home from './pages/Home.jsx'
+import { Toaster } from 'react-hot-toast';
+import HomePage from './pages/Home.jsx'
 import Template from './pages/Template.jsx'
 import Counter from './pages/Counter.jsx'
 import NewPool from './pages/NewPool.jsx'
@@ -13,19 +15,22 @@ import LockedPool_2 from './pages/LockedPage_2'
 
 
 function App() {
-
   return (
     <>
-      {/* <Home /> */}
-      {/* <Template /> */}
-      {/* <Counter /> */}
-      {/* <NewPool /> */}
-      {/* <UserForm /> */}
-      {/* <LockedPool /> */}
-      {/* <LockedPool_1 /> */}
-      {/* <LockedPool_2 /> */}
+      {/* Toast provider */}
+      <Toaster position="top-center" reverseOrder={false} />
+
+      {/* Router */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/counter" element={<Counter />} />
+          <Route path="/newpool" element={<NewPool />} />
+        </Routes>
+      </Router>
     </>
-  )
+  );
 }
+
 
 export default App

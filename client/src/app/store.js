@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import homeReducer from '../features/home/homeSlice'; 
+import counterReducer from '../features/counter/counterSlice';
 
 export const store = configureStore({
   reducer: {
-    home: homeReducer, // Add the home slice to the store
+    counter: counterReducer, // manages the number of users in the counter page
   },
 });
 
