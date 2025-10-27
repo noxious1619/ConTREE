@@ -1,7 +1,9 @@
 import express from "express";
 import Pool from "../models/Pool.js";
+import User from "../models/User.js"
 
 const router = express.Router();
+
 
 // Add a new user to a pool
 router.post("/:poolId", async (req, res) => {
@@ -32,10 +34,7 @@ router.get("/:poolId", async (req, res) => {
 //get a single user in a pool
 router.get("/:poolId/:userId", async (req, res) => {
   try {
-    const pool = await Pool.findById(req.params.poolId);
-    if (!pool) return res.status(404).json({ message: "Pool not found" });
-
-    const user = pool.users.id(req.params.userId);
+    const user = await User.findById(req.params.userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json(user);
@@ -82,6 +81,10 @@ router.delete("/:poolId/:userId", async (req, res) => {
     res.status(500).json({ message: "Error deleting user", error });
   }
 });
+
+
+
+
 
 
 export default router;

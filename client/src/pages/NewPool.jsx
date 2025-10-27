@@ -13,6 +13,8 @@ function NewPool() {
 
   // You can add other logic, handlers, or state here
 
+  
+
 return (
     <div
         className="h-screen w-screen bg-center flex items-center justify-center bg-cover"

@@ -4,15 +4,44 @@ import Pool from "../models/Pool.js";
 const router = express.Router();
 
 // ➕ Create a new pool
-router.post("/", async (req, res) => {
+// Generate a dummy pool with dummy users
+router.post("/generate", async (req, res) => {
   try {
-    const pool = new Pool(req.body);
-    const savedPool = await pool.save();
+    const { count } = req.body;
+
+    if (!count) {
+      return res.status(400).json({ error: "Invaid Count value" });
+    }
+
+    // Generate dummy users
+    const users = [];
+    for (let i = 1; i <= count; i++) {
+      users.push({
+        name: `user-${i}`,
+        amount: 0,
+        upiId: `user${i}@upi`,
+        note: ""
+      });
+    }
+
+    // Create the new pool with embedded users
+    const newPool = new Pool({
+      title: "New Pool",
+      users: users
+    });
+
+    const savedPool = await newPool.save();
+
+    // Respond with the full saved pool (including users)
+    console.log("✅ New pool created:", JSON.stringify(savedPool, null, 2));
     res.status(201).json(savedPool);
+
   } catch (error) {
-    res.status(500).json({ message: "Error creating pool", error });
+    console.error("Error generating dummy pool:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // 🔍 Get all pools
 router.get("/", async (req, res) => {

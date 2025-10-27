@@ -7,10 +7,6 @@ import { increment, decrement } from '../features/counter/counterSlice';
 import toast from 'react-hot-toast';
 import axios from "axios";
 
-
-
-
-
 function Counter() {
     const dispatch = useDispatch();
     const count = useSelector((state) => state.counter.value);
@@ -29,14 +25,13 @@ const handleSubmit = async () => {
 
   try {
     // Call backend API to generate users
-    const res = await axios.post("http://localhost:5000/api/dummyusers/generate", { count });
+    const res = await axios.post("http://localhost:5000/api/pools/generate", { count });
 
 
     console.log("Created users:", res.data);
-    toast.success(`${res.data.length} users created!`);
+    toast.success(`${res.data.users.length} users created!`);
+    navigate(`/newpool/${res.data._id}`);
 
-    // Navigate only after users are created
-    navigate("/newpool");
   } catch (err) {
     console.error(err);
     toast.error("Failed to create users!");
