@@ -64,4 +64,32 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-export default router;
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { title } = req.body;
+
+    if (!title || title.trim() === "") {
+      return res.status(400).json({ message: "Title cannot be empty" });
+    }
+
+    const updatedPool = await Pool.findByIdAndUpdate(
+      req.params.id,
+      { title },
+      { new: true } // returns updated document
+    );
+
+    if (!updatedPool) {
+      return res.status(404).json({ message: "Pool not found" });
+    }
+    
+    console.log(updatedPool);
+    res.json(updatedPool);
+  } catch (error) {
+    console.error("Error updating pool title:", error);
+    res.status(500).json({ message: "Server error while updating title" });
+  }
+});
+
+
+export default router; 
