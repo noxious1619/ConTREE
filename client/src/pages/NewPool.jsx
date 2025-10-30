@@ -130,7 +130,13 @@ const handleAddDummyUser = async (poolId) => {
             </button>
             <div 
               className="flex justify-center items-center h-10 w-10 rounded-4xl border-2"
-              onClick={() => handleAddDummyUser(id)}
+              onClick={() => {
+                if (pool.users.length >= 11) {
+                  toast.error("Maximum number of users reached!");
+                  return;
+                }
+                handleAddDummyUser(id);
+              }}
             >
               <Plus size={30} className="text-black-700" />
             </div>

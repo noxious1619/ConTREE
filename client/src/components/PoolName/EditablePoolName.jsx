@@ -10,6 +10,21 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
   const [error, setError] = useState("");
   const inputRef = useRef(null);
 
+  const refreshPoolDetails = async () => {
+  setIsLoading(true);
+  try {
+    const res = await fetch(`http://localhost:5000/api/pools/${poolId}`);
+    const updatedPool = await res.json();
+    setNewTitle(updatedPool.title);
+  } catch (err) {
+    console.error("Failed to refresh pool details:", err);
+    toast.error("Failed to refresh pool details");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
   // Auto focus when edit mode starts
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -52,6 +67,8 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
       setNewTitle(updatedPool.title);
       toast.success("Title updated successfully");
 
+      await refreshPoolDetails();
+      
       setIsEditing(false);
       setError("");
     } catch (err) {
