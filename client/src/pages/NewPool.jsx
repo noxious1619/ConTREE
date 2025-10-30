@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Plus, Minus } from "lucide-react";
 import EditableTitle from "../components/PoolName/EditablePoolName";
@@ -9,6 +9,8 @@ function NewPool() {
   const { id } = useParams();
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
   
 
   const fetchPool = async () => {
@@ -107,6 +109,9 @@ const handleAddDummyUser = async (poolId) => {
               <div
                 key={user._id}
                 className="flex gap-3 justify-center items-center w-[93%] h-[50px] bg-gray-400 rounded-xl shadow-xl mt-2 shrink-0"
+                onClick={() =>
+                  navigate(`/pool/${id}/userform/${user._id}`)
+                }
               >
                 <div className="w-8 h-8 flex justify-center items-center rounded-full text-xl bg-blue-300 hover:bg-blue-500">
                   {index + 1}

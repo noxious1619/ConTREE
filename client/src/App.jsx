@@ -26,6 +26,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/counter" element={<Counter />} />
           <Route path="/newpool/:id" element={<NewPool />} />
+          <Route path="pool/:poolid/userform/:userid" element={<UserForm />} />
         </Routes>
       </Router>
     </>

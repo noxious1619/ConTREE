@@ -4,10 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Plus } from "lucide-react"; 
 import { Minus } from "lucide-react";
 import { Edit2 } from "lucide-react";
+import EditableUserName from '../components/UserName/EditableUserName';
+import { useParams } from 'react-router-dom';
 
 
 
 function UserForm() {
+  const { poolid, userid } = useParams();
+    
 //   const dispatch = useDispatch();
 //   const showCreatePool = useSelector((state) => state.home.showCreatePool);
 
@@ -30,6 +34,7 @@ return (
             </div>
 
             {/* Heading */}
+            <EditableUserName />
             <div className='flex justify-center items-center w-full mx-auto gap-2 mb-4'>
                 <div className=' flex justify-center items-center text-2xl'>User 1</div>
                 <button>
@@ -61,7 +66,7 @@ return (
                     <div className='w-[90%] h-[60px] border- rounded-md bg-blue-400 text-3xl flex justify-center items-center'>
                         <input
                             type="string"
-                            maxlength="50"
+                            maxLength="50"
                             placeholder="Enter the UPI ID"
                             className="w-[96%] h-[78%] rounded-md placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-black"
                         />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Edit2, Loader2 } from "lucide-react";
+import { Edit2 } from "lucide-react";
 import toast from 'react-hot-toast';
 
 
@@ -9,20 +9,6 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null);
-
-  const refreshPoolDetails = async () => {
-  setIsLoading(true);
-  try {
-    const res = await fetch(`http://localhost:5000/api/pools/${poolId}`);
-    const updatedPool = await res.json();
-    setNewTitle(updatedPool.title);
-  } catch (err) {
-    console.error("Failed to refresh pool details:", err);
-    toast.error("Failed to refresh pool details");
-  } finally {
-    setIsLoading(false);
-  }
-};
 
 
   // Auto focus when edit mode starts
@@ -66,8 +52,6 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
       const updatedPool = await res.json();
       setNewTitle(updatedPool.title);
       toast.success("Title updated successfully");
-
-      await refreshPoolDetails();
       
       setIsEditing(false);
       setError("");
