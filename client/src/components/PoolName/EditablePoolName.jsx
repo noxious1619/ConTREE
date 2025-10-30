@@ -49,6 +49,7 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
         body: JSON.stringify({ title: trimmed }),
       });
       const updatedPool = await res.json();
+      setNewTitle(updatedPool.title);
       toast.success("Title updated successfully");
 
       setIsEditing(false);
@@ -74,7 +75,7 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
 return (
   <div>
     {isEditing ? (
-      <div className="flex border-2 justify-center items-center ">
+      <div className="flex justify-center items-center ">
         <input 
         ref={inputRef}
             value={newTitle}
@@ -84,7 +85,7 @@ return (
             }}
             onKeyDown={handleKeyDown}
             maxLength={maxLength}
-            className="border-2  text-2xl focus:outline-none focus:border-blue-500"
+            className=" border text-2xl focus:outline-none focus:border-blue-500"
         />
         <button
           disabled={
@@ -101,8 +102,8 @@ return (
         </button>
       </div>
     ) : (
-      <div className="flex border- justify-center items-center mb-3 borde">
-        <h2 className="text-2xl font-medium">{title}</h2>
+      <div className="flex justify-center items-center mb-3 borde">
+        <h2 className="text-2xl font-medium">{newTitle}</h2>
         <button
           onClick={() => setIsEditing(true)}
           className="p-2 hover:bg-blue-500 rounded-xl transition ml-3 bg-blue-400"

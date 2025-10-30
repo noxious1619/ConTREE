@@ -5,19 +5,48 @@ import User from "../models/User.js"
 const router = express.Router();
 
 
-// Add a new user to a pool
-router.post("/:poolId", async (req, res) => {
+// Add a new user to a pool (with details in request body)
+router.post('/:poolId', async (req, res) => {
   try {
-    const pool = await Pool.findById(req.params.poolId);
-    if (!pool) return res.status(404).json({ message: "Pool not found" });
+    const { poolId } = req.params;
+    const { name, upiId, amount } = req.body;
 
-    pool.users.push(req.body);
+    // Validate input
+    if (!name || !upiId) {
+      return res.status(400).json({ message: 'Name and UPI ID are required' });
+    }
+
+    const pool = await Pool.findById(poolId);
+    if (!pool) {
+      return res.status(404).json({ message: 'Pool not found' });
+    }
+
+    // Create a new user object
+    const newUser = {
+      userId: new mongoose.Types.ObjectId(),
+      name,
+      upiId,
+      amount: amount || 0,
+      note: "I have just been added"
+    };
+
+    // Push new user to pool
+    pool.users.push(newUser);
     await pool.save();
-    res.status(201).json(pool.users[pool.users.length - 1]); 
+
+    res.status(200).json({
+      message: 'User added successfully',
+      pool
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error adding user", error });
+    console.error('Error adding user:', error);
+    res.status(500).json({
+      message: 'Error adding user',
+      error: error.message
+    });
   }
 });
+
 
 // Get all users in a pool
 router.get("/:poolId", async (req, res) => {
@@ -81,10 +110,6 @@ router.delete("/:poolId/:userId", async (req, res) => {
     res.status(500).json({ message: "Error deleting user", error });
   }
 });
-
-
-
-
 
 
 export default router;

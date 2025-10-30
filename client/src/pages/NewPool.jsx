@@ -9,34 +9,23 @@ function NewPool() {
   const { id } = useParams();
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+
+  const fetchPool = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/pools/${id}`);
+      setPool(res.data);
+    } catch (err) {
+      console.error("Error fetching pool:", err);
+      toast.error("Failed to fetch pool");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-
-    const fetchPool = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/pools/${id}`);
-        setPool(res.data);
-      } catch (err) {
-        console.error("Error fetching pool:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPool();
+    fetchPool(); // We cant use it if we are making it inside the useffect
   }, [id]);
-
-  // const handleSaveTitle = async (newTitle) => {
-  //   try {
-  //     await axios.put(`http://localhost:5000/api/pools/${id}`, {
-  //       title: newTitle,
-  //     });
-  //     setPool((prev) => ({ ...prev, title: newTitle }));
-  //     toast.success("Pool name updated");
-  //   } catch (err) {
-  //     toast.error("Failed to update name");
-  //     throw err;
-  //   }
-  // };
 
   if (loading) {
     return (
@@ -53,6 +42,46 @@ function NewPool() {
       </div>
     );
   }
+
+const handleDeleteUser = async (userId) => {
+  try {
+    const res = await axios.delete(`http://localhost:5000/api/pools/users/${id}/${userId}`);
+    toast.success("User deleted successfully");
+
+    // Update state to remove user immediately (no reload needed)
+    setPool((prev) => ({
+      ...prev,
+      users: prev.users.filter((user) => user._id !== userId),
+    }));
+  } catch (err) {
+    console.error("Error deleting user:", err);
+    toast.error("Failed to delete user");
+  }
+};
+
+const handleAddDummyUser = async (poolId) => {
+  try {
+
+    // Hardcoded dummy user since we had some issue hardcoding it in the backend
+    const dummyUser = {
+      name: "New User",
+      amount: 0,
+      upiId: "not-set@upi",
+      note: "I just got added!"
+    };
+
+    // now send this data as hardcoded
+    const response = await axios.post(`http://localhost:5000/api/pools/users/${poolId}`, dummyUser);
+
+    toast.success("Dummy user added successfully");
+    console.log("User added:", response.data);
+    fetchPool();
+
+  } catch (error) {
+    console.error("Error adding user:", error);
+    toast.error(error.response?.data?.message || "Failed to add dummy user");
+  }
+};
 
   return (
 
@@ -86,7 +115,8 @@ function NewPool() {
                   {user.name}
                 </div>
                 <div className="w-[15%] text-left text-xl">₹{user.amount}</div>
-                <button className="h-7 w-7 border-2 mr-0.5 flex justify-center items-center rounded-full">
+                <button className="h-7 w-7 border-2 mr-0.5 flex justify-center items-center rounded-full" onClick={() => handleDeleteUser(user._id)}
+                > 
                   <Minus className="h-7 w-7" />
                 </button>
               </div>
@@ -98,7 +128,10 @@ function NewPool() {
             <button className="w-[80%] h-[60px] bg-blue-500 rounded-4xl text-2xl">
               Lock
             </button>
-            <div className="flex justify-center items-center h-10 w-10 rounded-4xl border-2">
+            <div 
+              className="flex justify-center items-center h-10 w-10 rounded-4xl border-2"
+              onClick={() => handleAddDummyUser(id)}
+            >
               <Plus size={30} className="text-black-700" />
             </div>
           </div>

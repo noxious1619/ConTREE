@@ -64,7 +64,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-
+// Update the title of the pool
 router.put("/:id", async (req, res) => {
   try {
     const { title } = req.body;

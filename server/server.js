@@ -7,7 +7,6 @@ import poolRoutes from "./routes/poolRoutes.js";
 import contributionRoutes from "./routes/contributionRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
-
 dotenv.config();
 connectDB();
 
@@ -19,7 +18,8 @@ app.use(bodyParser.json());
 // Routes
 app.use("/api/pools", poolRoutes);            
 // app.use("/api/contributions", contributionRoutes);
-// app.use("/api/pools/users", userRoutes);
+app.use("/api/pools/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on PORT: ${PORT}`));
+
