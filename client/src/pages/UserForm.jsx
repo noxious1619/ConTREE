@@ -157,7 +157,7 @@ return (
                         <textarea
                             id="noteInput"
                             type="text"
-                            placeholder="Write Something..."
+                            placeholder={userData.note}
                             maxLength="200"
                             className="w-[90%] h-[140px] bg-gray-100 border border-gray-400 rounded-lg px-3 py-2 placeholder-gray-400 text-2xl focus:outline-none focus:ring-2 focus:ring-black"
                         />

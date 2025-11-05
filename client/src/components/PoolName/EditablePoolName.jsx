@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Edit2 } from "lucide-react";
 import toast from 'react-hot-toast';
+import axios from "axios";
 
 
 function EditableTitle({ title, poolId, maxLength = 25 }) {
@@ -44,13 +45,14 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
     try {
       setIsLoading(true);
 
-      const res = await fetch(`http://localhost:5000/api/pools/${poolId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: trimmed }),
-      });
-      
-      const updatedPool = await res.json();
+      //update the pool name via API
+      const res = await axios.put(
+        `http://localhost:5000/api/pools/${poolId}`, 
+      { title: trimmed },
+      { headers: { "Content-Type": "application/json" } }
+      );
+
+      const updatedPool = res.data;
       setNewTitle(updatedPool.title);
       toast.success("Title updated successfully");
       
