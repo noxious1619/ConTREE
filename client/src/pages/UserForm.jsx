@@ -1,32 +1,91 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import { toggleCreatePool } from '../features/home/homeSlice';
-import { Plus } from "lucide-react"; 
-import { Minus } from "lucide-react";
-import { Edit2 } from "lucide-react";
 import EditableUserName from '../components/UserName/EditableUserName';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 
 function UserForm() {
     const { poolid, userid } = useParams();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    let amountTimeout;
+
+    const handleAmountChange = (e) => {
+    const input = e.target;
+    const value = Number(input.value);
+
+    // clear previous timer if user keeps typing
+    clearTimeout(amountTimeout);
+
+    amountTimeout = setTimeout(() => {
+        if (value <= 0) {
+        toast.error("Amount cannot be zero or negative!");
+        input.value = ""; 
+        }
+    }, 800); 
+    };
+
+
+    const handleSubmit = async () => {
+
+    const amountInput = document.getElementById("amountInput");
+    const upiInput = document.getElementById("upiInput");
+    const noteInput = document.getElementById("noteInput");
+
+    const amountValue = Number(amountInput.value);
+    const upiValue = upiInput.value.trim();
+    const noteValue = noteInput.value.trim();
+
+    const finalAmount = amountValue > 0 || amountValue == '' ? amountValue : 1;
+    const finalUpi = upiValue !== "" ? upiValue : "default@upi"; // default UPI ID
+    const finalNote = noteValue !== "" ? noteValue : "No note"; // default note
+
+    // validation
+    // if (!amountValue || amountValue <= 0) {
+    //     toast.error("Amount must be greater than 0!");
+    //     return;
+    // }
+
+    // if (!upiValue) {
+    //     toast.error("UPI ID cannot be empty!");
+    //     return;
+    // }
+
+    try {
+        await axios.put(`http://localhost:5000/api/pools/users/${poolid}/${userid}`, {
+        amount: amountValue,
+        upiId: upiValue,
+        note: noteValue,
+        });
+
+        navigate(-1);
+        toast.success("Details saved successfully!");
+        
+    } catch (error) {
+        console.error("Error saving details:", error);
+        toast.error("Failed to save details. Try again!");
+    }
+    };
+
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/api/pools/${poolid}`);
+
         const pool = res.data;
 
         // find the user by id
         const foundUser = pool.users.find((u) => u._id === userid);
         setUserData(foundUser);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user details:", error);
       } finally {
         setLoading(false);
       }
@@ -73,9 +132,11 @@ return (
                         </div>
                         <input
                             type="number"
+                            id="amountInput"
                             min="0"
-                            placeholder="Enter the amount"
-                            className="w-[85%] h-[78%] rounded-r-md placeholder-gray-400 bg-white h- focus:outline-none focus:ring-2 focus:ring-black"
+                            onChange={handleAmountChange}
+                            placeholder= {userData.amount}
+                            className="w-[85%] h-[78%] rounded-r-md bg-white h- focus:outline-none focus:ring-2 focus:ring-black"
                         />
                     </div>
 
@@ -85,16 +146,18 @@ return (
                         <input
                             type="string"
                             maxLength="50"
-                            placeholder="Enter the UPI ID"
-                            className="w-[96%] h-[78%] rounded-md placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-black"
+                            id="upiInput"
+                            placeholder={userData.upiId}
+                            className="w-[96%] h-[78%] rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-black"
                         />
                     </div>
 
                     {/* Note */}
                     <div className='w-[90%] h-[60px] border- text-3xl flex items-end'>Note</div>
                         <textarea
+                            id="noteInput"
                             type="text"
-                            placeholder="Scooty rent"
+                            placeholder="Write Something..."
                             maxLength="200"
                             className="w-[90%] h-[140px] bg-gray-100 border border-gray-400 rounded-lg px-3 py-2 placeholder-gray-400 text-2xl focus:outline-none focus:ring-2 focus:ring-black"
                         />
@@ -102,7 +165,13 @@ return (
 
                 {/* buttons */}
                 <div className='w-full h-[20%] border- flex justify-center'>
-                    <button className='w-[80%] h-[60px] bg-blue-500 rounded-4xl text-2xl flex justify-center items-center mt-5'>Submit</button>
+                    <button 
+                        className='w-[80%] h-[60px] bg-blue-500 rounded-4xl text-2xl flex justify-center items-center mt-5'
+                        onClick={handleSubmit}
+                    >
+                        Submit
+                    </button>
+
                 </div>
 
             </div>

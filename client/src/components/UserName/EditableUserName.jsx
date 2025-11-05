@@ -67,11 +67,11 @@ const EditableUserName = ({ name, maxLength = 25 }) => {
 
       // ✅ Update only the specific user’s name in the pool
       const res = await axios.put(
-        `http://localhost:5000/api/pools/${poolid}/users/${userid}`,
+        `http://localhost:5000/api/pools/users/${poolid}/${userid}`,
         { name: trimmed }
       );
 
-      const updatedUser = res.data;
+      const updatedUser = res.data.user;
       setNewName(updatedUser.name);
       toast.success("User name updated successfully");
       setIsEditing(false);

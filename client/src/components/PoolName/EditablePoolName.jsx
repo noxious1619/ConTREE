@@ -49,6 +49,7 @@ function EditableTitle({ title, poolId, maxLength = 25 }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: trimmed }),
       });
+      
       const updatedPool = await res.json();
       setNewTitle(updatedPool.title);
       toast.success("Title updated successfully");
