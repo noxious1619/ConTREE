@@ -9,5 +9,6 @@ const poolSchema = new mongoose.Schema({
 });
 
 const Pool = mongoose.model("Pool", poolSchema);
+
 export default Pool;
 

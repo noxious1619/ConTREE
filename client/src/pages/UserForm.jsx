@@ -6,16 +6,37 @@ import { Minus } from "lucide-react";
 import { Edit2 } from "lucide-react";
 import EditableUserName from '../components/UserName/EditableUserName';
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 
 function UserForm() {
-  const { poolid, userid } = useParams();
-    
-//   const dispatch = useDispatch();
-//   const showCreatePool = useSelector((state) => state.home.showCreatePool);
+    const { poolid, userid } = useParams();
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  // You can add other logic, handlers, or state here
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/pools/${poolid}`);
+        const pool = res.data;
+
+        // find the user by id
+        const foundUser = pool.users.find((u) => u._id === userid);
+        setUserData(foundUser);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [poolid, userid]);
+
+  if (loading) return <div>Loading user data...</div>;
+//   if (!userData) return <div>User not found in this pool.</div>;
 
 return (
     <div
@@ -34,12 +55,9 @@ return (
             </div>
 
             {/* Heading */}
-            <EditableUserName />
+            <EditableUserName name={userData.name} userId={userid} />
             <div className='flex justify-center items-center w-full mx-auto gap-2 mb-4'>
-                <div className=' flex justify-center items-center text-2xl'>User 1</div>
-                <button>
-                    <Edit2 size={20} className="text-black-700" />
-                </button>
+                
             </div>
 
             {/*All content */}

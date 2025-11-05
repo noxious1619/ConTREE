@@ -120,7 +120,13 @@ const handleAddDummyUser = async (poolId) => {
                   {user.name}
                 </div>
                 <div className="w-[15%] text-left text-xl">₹{user.amount}</div>
-                <button className="h-7 w-7 border-2 mr-0.5 flex justify-center items-center rounded-full" onClick={() => handleDeleteUser(user._id)}
+                <button 
+                className="h-7 w-7 border-2 mr-0.5 flex justify-center items-center rounded-full"
+
+                onClick={(e) => {
+                  e.stopPropagation();// prevent parent click 
+                  handleDeleteUser(user._id); 
+                }}
                 > 
                   <Minus className="h-7 w-7" />
                 </button>

@@ -1,6 +1,7 @@
 import express from "express";
 import Pool from "../models/Pool.js";
-import User from "../models/User.js"
+import User from "../models/User.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.post('/:poolId', async (req, res) => {
 
     // Create a new user object
     const newUser = {
-      userId: new mongoose.Types.ObjectId(),
+      _id: new mongoose.Types.ObjectId(),
       name,
       upiId,
       amount: amount || 0,
@@ -47,6 +48,41 @@ router.post('/:poolId', async (req, res) => {
   }
 });
 
+//Update anything inside a user in the pool
+router.put("/:poolid/:userid", async (req, res) => {
+  try {
+    const { poolid, userid } = req.params;
+    const { name, amount, upiId, note } = req.body; 
+
+    const pool = await Pool.findById(poolid);
+    if (!pool) {
+      return res.status(404).json({ message: "Pool not found" });
+    }
+
+    const user = pool.users.id(userid);
+    if (!user) {
+      return res.status(404).json({ message: "User not found in this pool" });
+    }
+
+    //Update only the fields provided in the request
+    if (name !== undefined) user.name = name;
+    if (amount !== undefined) user.amount = amount;
+    if (upiId !== undefined) user.upiId = upiId;
+    if (note !== undefined) user.note = note;
+
+    await pool.save();
+
+    res.status(200).json({
+      message: "User details updated successfully",
+      user,
+    });
+  } catch (err) {
+    console.error("Error updating user:", err);
+    res.status(500).json({ message: "Server error while updating user" });
+  }
+});
+
+
 
 // Get all users in a pool
 router.get("/:poolId", async (req, res) => {
@@ -63,31 +99,21 @@ router.get("/:poolId", async (req, res) => {
 //get a single user in a pool
 router.get("/:poolId/:userId", async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const { poolId, userId } = req.params;
 
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching user", error });
-  } 
-});
-
-// Update a user in a pool
-router.put("/:poolId/:userId", async (req, res) => {
-  try {
-    const pool = await Pool.findById(req.params.poolId);
+    const pool = await Pool.findById(poolId);
     if (!pool) return res.status(404).json({ message: "Pool not found" });
 
-    const user = pool.users.id(req.params.userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const user = pool.users.id(userId);
+    if (!user) return res.status(404).json({ message: "User not found in this pool" });
 
-    Object.assign(user, req.body); // update fields
-    await pool.save();
-    res.status(200).json(user); 
-  } catch (error) {
-    res.status(500).json({ message: "Error updating user", error });
+    res.status(200).json(user);
+  }catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({ message: "Error fetching user", error });
   }
 });
+
 
 // Delete a user from a pool
 router.delete("/:poolId/:userId", async (req, res) => {
