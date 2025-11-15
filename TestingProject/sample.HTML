@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UPI Verifier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 80px;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #3399cc;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>UPI ID Verifier</h3>
+    <input type="text" id="upi" placeholder="Enter UPI ID (e.g. dishant@oksbi)" />
+    <button onclick="verifyUPI()">Check</button>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    function verifyUPI() {
+      const upi = document.getElementById('upi').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      // Basic regex check for UPI format
+      const pattern = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+
+      if (!upi) {
+        resultDiv.textContent = "Please enter a UPI ID.";
+        resultDiv.style.color = "gray";
+        return;
+      }
+
+      if (pattern.test(upi)) {
+        resultDiv.textContent = "✅ UPI format looks valid (pattern match).";
+        resultDiv.style.color = "green";
+      } else {
+        resultDiv.textContent = "❌ Invalid UPI format.";
+        resultDiv.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
