@@ -27,6 +27,7 @@ function App() {
           <Route path="/counter" element={<Counter />} />
           <Route path="/newpool/:id" element={<NewPool />} />
           <Route path="pool/:poolid/userform/:userid" element={<UserForm />} />
+          <Route path="/lockedpool/:poolid" element={<LockedPool />} />
         </Routes>
       </Router>
     </>

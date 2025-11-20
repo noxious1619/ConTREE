@@ -4,11 +4,14 @@ import axios from "axios";
 import { Plus, Minus } from "lucide-react";
 import EditableTitle from "../components/PoolName/EditablePoolName";
 import toast from "react-hot-toast";
+import LockConfirmPopup from "../components/lockConfirmPopup";
 
 function NewPool() {
   const { id } = useParams();
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showLockConfirm, setShowLockConfirm] = useState(false);
+
 
   const navigate = useNavigate();
   
@@ -44,6 +47,17 @@ function NewPool() {
       </div>
     );
   }
+
+const handleLockPool = async () => {
+  try {
+    navigate(`/lockedpool/${id}`);
+    toast.success("Pool locked successfully!");
+    fetchPool();
+  } catch (error) {
+    console.error("Error locking pool:", error);
+    toast.error("Failed to lock the pool");
+  }
+};
 
 const handleDeleteUser = async (userId) => {
   try {
@@ -91,6 +105,17 @@ const handleAddDummyUser = async (poolId) => {
       className="h-screen w-screen bg-center flex items-center justify-center bg-cover"
       style={{ backgroundImage: "url('/tree_bg_pic.jpg')" }}
     >
+
+      {showLockConfirm && (
+        <LockConfirmPopup
+          onConfirm={async () => {
+            setShowLockConfirm(false);
+            await handleLockPool();
+          }}
+          onCancel={() => setShowLockConfirm(false)}
+        />
+      )}
+
       <div className="flex flex-col w-[480px] h-[90%] max-w-full max-h-full bg-white bg-opacity-80 p-6 rounded-3xl shadow-lg text-center">
         <div className="flex flex-col items-center justify-center mb-5">
           <div
@@ -136,9 +161,23 @@ const handleAddDummyUser = async (poolId) => {
 
           {/* bottom buttons */}
           <div className="flex justify-center items-center w-full gap-2 mt-3">
-            <button className="w-[80%] h-[60px] bg-blue-500 rounded-4xl text-2xl">
-              Lock
-            </button>
+          <button
+            className="w-[80%] h-[60px] bg-blue-500 rounded-4xl text-2xl"
+            onClick={() => {
+              if (pool.users.length === 0) {
+                toast.error("Number of users can't be null");
+                return;
+              }
+              if (pool.users.every(user => user.amount === 0 )){
+                toast.error("All users must have non-zero amount before locking!");
+                return;
+              }
+              setShowLockConfirm(true);
+            }}
+          >
+            Lock
+          </button>
+
             <div 
               className="flex justify-center items-center h-10 w-10 rounded-4xl border-2"
               onClick={() => {
