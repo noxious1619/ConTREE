@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import LockConfirmPopup from "../components/lockConfirmPopup";
 
 function NewPool() {
-  const { id } = useParams();
+  const { id } = useParams(); // pool ID from URL
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showLockConfirm, setShowLockConfirm] = useState(false);
@@ -27,6 +27,7 @@ function NewPool() {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchPool(); // We cant use it if we are making it inside the useffect
