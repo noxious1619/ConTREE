@@ -20,15 +20,17 @@ export const generateSettlement = async (req, res) => {
     //   return res.status(400).json({ message: "Pool must be locked to generate settlement" });
     // }
 
-    // // Prevent regeneration: if settlement exists return 409
-    // const existing = await Settlement.findOne({ poolId });
-    // if (existing) {
-    //   return res.status(409).json({ message: "Settlement already exists for this pool" });
-    // }
+    let settlement = await Settlement.findOne({ poolId });
+    if (settlement) {
+      return res.status(200).json({
+        message: "Settlement already existed — returning existing one",
+        settlement
+      });
+    }
 
     const { payers, receivers } = calculateSimpleSettlement(pool.users);
 
-    const settlement = new Settlement({
+    settlement = new Settlement({
       poolName: pool.title || "",
       poolId,
       payers,

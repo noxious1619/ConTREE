@@ -51,14 +51,18 @@ function NewPool() {
 
 const handleLockPool = async () => {
   try {
+    await axios.patch(`http://localhost:5000/api/pools/${id}/toggle-lock`);
+    await axios.post(`http://localhost:5000/api/settlement/generate/${id}`);
+    const updated = await axios.get(`/api/pool/${id}`);
+    console.log("settlement Data :", updated.data.settlement)
+    toast.success("Pool locked & settlement generated!");
     navigate(`/lockedpool/${id}`);
-    toast.success("Pool locked successfully!");
-    fetchPool();
   } catch (error) {
     console.error("Error locking pool:", error);
     toast.error("Failed to lock the pool");
   }
 };
+
 
 const handleDeleteUser = async (userId) => {
   try {

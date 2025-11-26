@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { use } from "react";
 
 function LockedPool_2() {
   
   const { poolid } = useParams();
-  console.log("PARAM POOL ID →", poolid);
 
   const [pool, setPool] = useState(null);
+  const [settlement, setSettlement] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const getPool = async () => {
@@ -22,9 +23,24 @@ function LockedPool_2() {
     }
   };
 
+  const getSettlement = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/settlement/${poolid}`);
+      setSettlement(response.data);
+      console.log("Fetched settlement pool", settlement)
+    }catch (error) {
+      console.error("Error fetching pool:", error);
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getSettlement()
+  }, []);
+
   const total = pool ? pool.users.reduce((sum, user) => sum + user.amount, 0) : 0;
   const share = pool ? pool.users.length > 0 ? (total / pool.users.length) : 0 : 0;
-  const poolAmount = pool ? pool.poolAmount : 0;
+
 
 
   useEffect(() => {
@@ -55,7 +71,7 @@ const c = pool.contributions || [];
       style={{ backgroundImage: "url('/tree_bg_pic.jpg')" }}
     >
       {/* Outer Card */}
-      <div className="flex flex-col w-[480px] h-[90%] bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-gray-200">
+      <div className="flex flex-col w-[480px] h-[90%] bg-white/70 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-gray-200">
 
         {/* Logo */}
         <div className="flex flex-col items-center mb-5">

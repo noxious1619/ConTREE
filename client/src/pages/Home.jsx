@@ -11,7 +11,7 @@ function Home() {
       className="h-screen w-screen bg-center flex items-center justify-center bg-cover"
       style={{ backgroundImage: "url('/tree_bg_pic.jpg')" }}
     >
-      <div className="flex flex-col w-[480px] h-[90%] max-w-full bg-white bg-opacity-80 p-6 rounded-3xl shadow-lg text-center">
+      <div className="flex flex-col w-[480px] h-[90%] max-w-full bg-white/80 bg-opacity-80 p-6 rounded-3xl shadow-lg text-center">
 
         {/* logo */}
         <div className="flex flex-col items-center mb-5">

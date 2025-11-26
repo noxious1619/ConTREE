@@ -20,7 +20,7 @@ return (
     >
 
         {/* outer container */}
-        <div className="flex flex-col w-[480px] h-[90%] max-w-full max-h-full bg-white bg-opacity-10 p-6 rounded-3xl shadow-lg text-center">
+        <div className="flex flex-col w-[480px] h-[90%] max-w-full max-h-full bg-white bg-opacity-80 p-6 rounded-3xl shadow-lg text-center">
 
             {/* logo on top */}
             <div className="flex flex-col items-center justify-center mb-5">
