@@ -63,7 +63,29 @@ function LockedPool_2() {
     );
   }
 
-const c = pool.contributions || [];
+  const c = pool.contributions || [];
+  const settlementList = [];
+
+  if (settlement) {
+    settlement.payers?.forEach(p => {
+      settlementList.push({
+        name: p.name,
+        amount: p.amount,
+        type: "payer",
+        status: p.status
+      });
+    });
+
+    settlement.receivers?.forEach(r => {
+      settlementList.push({
+        name: r.name,
+        amount: r.amount,
+        type: "receiver",
+        status: r.status
+      });
+    });
+  }
+
 
   return (
     <div
@@ -119,76 +141,47 @@ const c = pool.contributions || [];
 
           {/* Contributions (NO MAP) */}
           <div className="flex flex-col w-full h-full bg-white rounded-2xl shadow-sm overflow-y-auto px-3 py-2">
-            <h2 className="text-lg font-medium text-gray-700 mb-3">Contributions</h2>
+            <h2 className="text-lg font-medium text-gray-700 mb-3">
+              Contributions
+            </h2>
+            {settlementList.length === 0 && (
+              <p className="text-gray-600 text-sm text-center">No settlement found</p>
+            )}
 
-            {/* Contribution 1 */}
-            {c[0] && (
-              <div className="flex items-center justify-between bg-[#f9fafb] rounded-xl px-4 py-3 mb-2 transition">
-                <span className="text-gray-700 font-medium w-1/3">{c[0].name}</span>
-                <span className={`font-semibold w-1/3 text-center ${c[0].amount > c[0].share ? "text-green-600" : "text-red-500"}`}>
-                  ₹{c[0].amount}
+            {settlementList.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between bg-[#f9fafb] rounded-xl px-4 py-3 mb-2"
+              >
+                {/* NAME */}
+                <span className="text-gray-700 font-medium w-1/3">
+                  {item.name}
                 </span>
+
+                {/* AMOUNT */}
+                <span
+                  className={
+                    `font-semibold w-1/3 text-center ` +
+                    (item.type === "payer" ? "text-red-500" : "text-green-600")
+                  }
+                >
+                  ₹{item.amount}
+                </span>
+
+                {/* BUTTON */}
                 <span className="w-1/3 text-right">
-                  {c[0].canPay ? (
-                    <button className="px-4 py-1.5 bg-green-500 text-white rounded-full text-sm">Pay</button>
+                  {item.type === "payer" ? (
+                    <button className="px-4 py-1.5 bg-red-500 text-white rounded-full text-sm">
+                      Pay
+                    </button>
                   ) : (
-                    <span className="text-gray-500 text-sm">{c[0].status}</span>
+                    <button className="px-4 py-1.5 bg-green-500 text-white rounded-full text-sm">
+                      Receive
+                    </button>
                   )}
                 </span>
               </div>
-            )}
-
-            {/* Contribution 2 */}
-            {c[1] && (
-              <div className="flex items-center justify-between bg-[#f9fafb] rounded-xl px-4 py-3 mb-2 transition">
-                <span className="text-gray-700 font-medium w-1/3">{c[1].name}</span>
-                <span className={`font-semibold w-1/3 text-center ${c[1].amount > c[1].share ? "text-green-600" : "text-red-500"}`}>
-                  ₹{c[1].amount}
-                </span>
-                <span className="w-1/3 text-right">
-                  {c[1].canPay ? (
-                    <button className="px-4 py-1.5 bg-green-500 text-white rounded-full text-sm">Pay</button>
-                  ) : (
-                    <span className="text-gray-500 text-sm">{c[1].status}</span>
-                  )}
-                </span>
-              </div>
-            )}
-
-            {/* Contribution 3 */}
-            {c[2] && (
-              <div className="flex items-center justify-between bg-[#f9fafb] rounded-xl px-4 py-3 mb-2 transition">
-                <span className="text-gray-700 font-medium w-1/3">{c[2].name}</span>
-                <span className={`font-semibold w-1/3 text-center ${c[2].amount > c[2].share ? "text-green-600" : "text-red-500"}`}>
-                  ₹{c[2].amount}
-                </span>
-                <span className="w-1/3 text-right">
-                  {c[2].canPay ? (
-                    <button className="px-4 py-1.5 bg-green-500 text-white rounded-full text-sm">Pay</button>
-                  ) : (
-                    <span className="text-gray-500 text-sm">{c[2].status}</span>
-                  )}
-                </span>
-              </div>
-            )}
-
-            {/* Contribution 4 */}
-            {c[3] && (
-              <div className="flex items-center justify-between bg-[#f9fafb] rounded-xl px-4 py-3 mb-2 transition">
-                <span className="text-gray-700 font-medium w-1/3">{c[3].name}</span>
-                <span className={`font-semibold w-1/3 text-center ${c[3].amount > c[3].share ? "text-green-600" : "text-red-500"}`}>
-                  ₹{c[3].amount}
-                </span>
-                <span className="w-1/3 text-right">
-                  {c[3].canPay ? (
-                    <button className="px-4 py-1.5 bg-green-500 text-white rounded-full text-sm">Pay</button>
-                  ) : (
-                    <span className="text-gray-500 text-sm">{c[3].status}</span>
-                  )}
-                </span>
-              </div>
-            )}
-
+            ))}
           </div>
         </div>
       </div>
