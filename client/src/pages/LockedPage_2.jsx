@@ -51,18 +51,17 @@ const c = pool.contributions || [];
 
   return (
     <div
-      className="h-screen w-screen bg-center bg-cover flex items-center justify-center"
+      className="h-screen w-screen bg-center flex items-center justify-center bg-cover"
       style={{ backgroundImage: "url('/tree_bg_pic.jpg')" }}
     >
       {/* Outer Card */}
       <div className="flex flex-col w-[480px] h-[90%] bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-gray-200">
 
         {/* Logo */}
-        <div className="flex flex-col items-center justify-center mb-4">
-          <div
-            className="w-24 h-24 rounded-full bg-center bg-contain bg-no-repeat shadow-md"
-            style={{ backgroundImage: "url('/logo_3.png')" }}
-          />
+        <div className="flex flex-col items-center mb-5">
+          <div className="w-30 h-30 rounded-full flex items-center justify-center bg-center bg-contain"
+          style={{ backgroundImage: "url('/logo_3.png')" }}>
+          </div>
         </div>
 
         {/* Dynamic Heading */}

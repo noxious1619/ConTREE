@@ -170,7 +170,7 @@ const handleAddDummyUser = async (poolId) => {
                 return;
               }
               if (pool.users.every(user => user.amount === 0 )){
-                toast.error("All users must have non-zero amount before locking!");
+                toast.error("A Single user must have non-zero amount before locking!");
                 return;
               }
               setShowLockConfirm(true);
