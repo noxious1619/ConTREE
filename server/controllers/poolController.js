@@ -1,5 +1,6 @@
 // server/controllers/poolController.js
 import Pool from "../models/Pool.js";
+import SettlementSchema from "../models/SettlementSchema.js"
 
 /**
  * Create a new pool with dummy users
@@ -121,3 +122,33 @@ export const updatePoolTitle = async (req, res) => {
     res.status(500).json({ message: "Server error while updating title" });
   }
 };
+
+/**
+ * Delete a pool AND its settlement
+ */
+export const deletePool = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Delete pool
+    const deletedPool = await Pool.findByIdAndDelete(id);
+    if (!deletedPool) {
+      return res.status(404).json({ message: "Pool not found" });
+    }
+
+    // Delete related settlement
+    await SettlementSchema.findOneAndDelete({ poolId: id });
+    console.log("settlement found");
+
+    return res.status(200).json({
+      message: "Pool and its settlement deleted successfully",
+      pool: deletedPool
+    });
+
+  } catch (error) {
+    console.error("Error deleting pool:", error);
+    return res.status(500).json({ message: "Server error while deleting pool" });
+  }
+};
+
+

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function LockedPool_2() {
   const { poolid } = useParams();
+  const navigate = useNavigate();
 
   const [pool, setPool] = useState(null);
   const [settlement, setSettlement] = useState(null);
@@ -18,9 +19,15 @@ function LockedPool_2() {
       setPool(response.data);
       console.log("Fetched pool data:", response.data);
       setLoading(false);
+
+      // 🚨 Safety guard: if somehow pool is NOT locked → send home
+      if (!response.data?.isLocked) {
+        navigate("/", { replace: true });
+      }
     } catch (error) {
       console.error("Error fetching pool:", error);
       setLoading(false);
+      navigate("/", { replace: true });
     }
   };
 
@@ -36,12 +43,20 @@ function LockedPool_2() {
       console.error("Error fetching settlement:", error);
     }
   };
+ 
+  //handles not going back to unlocked page
+  useEffect(() => {
+    const handleBack = (event) => {
+      navigate("/", { replace: true });
+    };
+
+    window.addEventListener("popstate", handleBack);
+    return () => window.removeEventListener("popstate", handleBack);
+  }, [navigate]);
+
 
   useEffect(() => {
     getSettlement();
-  }, []);
-
-  useEffect(() => {
     getPool();
   }, [poolid]);
 
@@ -55,11 +70,10 @@ function LockedPool_2() {
 
   const paid = settlement
     ? settlement.payers
-        .filter(p => p.status === "paid")
+        .filter((p) => p.status === "paid")
         .reduce((sum, p) => sum + Number(p.amount || 0), 0)
     : 0;
 
-  // Share = total / users.length
   const share =
     pool?.users?.length > 0
       ? (total / pool.users.length).toFixed(2)
@@ -89,7 +103,7 @@ function LockedPool_2() {
     );
   }
 
-  // Build contributions from settlement
+  // Build contributions
   const settlementList = [];
 
   if (settlement) {
@@ -138,9 +152,7 @@ function LockedPool_2() {
           <div className="grid grid-cols-2 gap-4 w-full mb-6">
             {/* Total */}
             <div className="flex flex-col justify-center items-center bg-white rounded-xl shadow-md py-3 transition">
-              <span className="text-gray-500 text-sm font-medium">
-                Total
-              </span>
+              <span className="text-gray-500 text-sm font-medium">Total</span>
               <span className="text-lg font-semibold text-gray-800">
                 ₹ {total}
               </span>
@@ -148,9 +160,7 @@ function LockedPool_2() {
 
             {/* Paid */}
             <div className="flex flex-col justify-center items-center bg-white rounded-xl shadow-md py-3 transition">
-              <span className="text-gray-500 text-sm font-medium">
-                Paid
-              </span>
+              <span className="text-gray-500 text-sm font-medium">Paid</span>
               <span className="text-lg font-semibold text-gray-800">
                 ₹{paid}
               </span>
@@ -158,15 +168,13 @@ function LockedPool_2() {
 
             {/* Share */}
             <div className="flex flex-col justify-center items-center bg-white rounded-xl shadow-md py-3 transition">
-              <span className="text-gray-500 text-sm font-medium">
-                Share
-              </span>
+              <span className="text-gray-500 text-sm font-medium">Share</span>
               <span className="text-lg font-semibold text-gray-800">
                 ₹ {share}
               </span>
             </div>
 
-            {/* Pool */}
+            {/* Pool Amount */}
             <div className="flex flex-col justify-center items-center bg-white rounded-xl shadow-md py-3 transition">
               <span className="text-gray-500 text-sm font-medium">
                 Pool
@@ -194,12 +202,10 @@ function LockedPool_2() {
                 key={index}
                 className="flex items-center justify-between bg-[#f9fafb] rounded-xl px-4 py-3 mb-2"
               >
-                {/* Name */}
                 <span className="text-gray-700 font-medium w-1/3">
                   {item.name}
                 </span>
 
-                {/* Amount */}
                 <span
                   className={`font-semibold w-1/3 text-center ${
                     item.type === "payer"
@@ -210,7 +216,6 @@ function LockedPool_2() {
                   ₹{item.amount}
                 </span>
 
-                {/* Button */}
                 <span className="w-1/3 text-right">
                   {item.type === "payer" ? (
                     <button className="px-4 py-1.5 bg-red-500 text-white rounded-full text-sm">

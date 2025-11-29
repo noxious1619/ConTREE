@@ -5,7 +5,8 @@ import {
   togglePoolLock,
   getAllPools,
   getPoolById,
-  updatePoolTitle
+  updatePoolTitle,
+  deletePool
 } from "../controllers/poolController.js";
 
 const router = express.Router();
@@ -24,5 +25,8 @@ router.get("/:id", getPoolById);
 
 // Update pool title
 router.put("/:id", updatePoolTitle);
+
+// 
+router.delete("/:id", deletePool);
 
 export default router;
