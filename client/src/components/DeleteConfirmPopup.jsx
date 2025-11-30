@@ -1,28 +1,55 @@
 import React from "react";
+import { Trash2, AlertTriangle } from "lucide-react";
 
 function DeleteConfirmPopup({ onConfirm, onCancel }) {
   return (
-    <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-2xl shadow-xl w-[85%] max-w-[400px] text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      
+      {/* Dark Overlay with Blur */}
+      <div 
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+        onClick={onCancel}
+      ></div>
 
-        <h2 className="text-2xl font-semibold mb-3 text-red-600">Delete Pool?</h2>
+      {/* Modal Content */}
+      <div className="relative bg-white/90 backdrop-blur-xl rounded-[30px] shadow-2xl w-full max-w-sm p-6 text-center border border-white/50 transform transition-all scale-100">
+        
+        {/* Danger Icon Container */}
+        <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-5 shadow-inner">
+          <Trash2 className="w-8 h-8 text-red-600" />
+        </div>
 
-        <p className="text-gray-700 mb-6 text-lg">
-          This action <strong>cannot be undone.</strong><br />
-          All pool data and settlements will be permanently deleted.
-        </p>
+        {/* Text Content */}
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          Delete this Pool?
+        </h2>
 
-        <div className="flex justify-between gap-4">
+        {/* Warning Box */}
+        <div className="bg-red-50 border border-red-100 rounded-xl p-4 mb-6">
+            <div className="flex flex-col items-center gap-2 text-red-800 text-sm font-medium">
+                <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-xs">
+                    <AlertTriangle size={14} /> Irreversible Action
+                </div>
+                <p className="leading-tight opacity-80">
+                    All user data and settlement history for this pool will be permanently lost.
+                </p>
+            </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="w-full py-3 bg-gray-300 rounded-xl text-lg"
+            className="flex-1 py-3.5 rounded-xl text-gray-600 font-bold bg-gray-100 hover:bg-gray-200 transition-colors"
           >
             Cancel
           </button>
 
           <button
             onClick={onConfirm}
-            className="w-full py-3 bg-red-600 text-white rounded-xl text-lg"
+            className="flex-1 py-3.5 rounded-xl text-white font-bold 
+            bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600
+            shadow-lg shadow-red-500/30 transition-all transform active:scale-95"
           >
             Yes, Delete
           </button>
